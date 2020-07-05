@@ -1,0 +1,151 @@
+.main-content {
+    display: flex;
+    margin: 20px 0;
+    justify-content: space-between;
+}
+
+.detail {
+    border: 1px solid black;
+    width: 31%;
+    height: 120px;
+
+}
+
+.detail-content {
+    display: flex;
+    padding-bottom: 10px;
+    margin: 10px;
+
+}
+
+.detail-label {
+    padding-right: 1rem;
+    font-weight: bold;
+    font-size: 48px;
+    color: black;
+    opacity: 42%
+}
+
+.table-information {
+    width: 100%;
+}
+
+.appraisal-page {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bio {
+    width: 45%;
+    height: 70%;
+    border: 1px solid lightgrey;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.appraisal-form {
+    width: 50%;
+    height: 70%;
+    border: 1px solid lightgrey;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.bio-image {
+    border-radius: 50%;
+}
+
+.spacer {
+    margin-bottom: 20px;
+}
+
+.label {
+    font-weight: bold;
+    font-size: 24px;
+    padding-left: 10px;
+
+}
+
+.text {
+    padding-left: 10px;
+}
+
+.d-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-wrapper {
+    margin: 90px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: 3em;
+    grid-column-gap: 4em;
+}
+
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid lightgrey;
+    width: 200px;
+    height: 200px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+    border-radius: 10px;
+}
+
+.item:hover {
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.4), 0 12px 40px 0 rgba(0, 0, 0, 0.38);
+    opacity: 0.7;
+}
+
+.item-content {
+    display: flex;
+    color: black;
+    flex-direction: column;
+    padding: 0 10px;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.d-body {
+    /*background: rgb(228,153,84);*/
+    /*background: linear-gradient(16deg, rgba(228,153,84,1) 26%, rgba(230,179,114,1) 72%);*/
+}
+
+.content-text {
+    color: black;
+    opacity: 56%;
+}
+
+.home-link > a{
+    position: absolute;
+    top: 15px;
+    right: 0;
+    margin-right: 20px;
+    color: #636b6f;
+    padding: 0 25px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.admin-header{
+    position: absolute;
+    right: 0;
+    top: 30px;
+    width: 120px
+
+}
+
+.approval-tables{
+    display: flex;
+    justify-content: space-between;
+}
