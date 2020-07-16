@@ -16,10 +16,12 @@ class isSupervisor
      */
     public function handle($request, Closure $next)
     {
-       if(count(Auth::user()->employees) === 0)
-       {
-           return redirect('client/emp_appraise');
-       }
+        if(Auth::user()){
+            if(count(Auth::user()->employees) === 0)
+            {
+                return redirect('client/emp_appraise');
+            }
+        }
        return $next($request);
     }
 }

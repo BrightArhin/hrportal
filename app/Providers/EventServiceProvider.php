@@ -25,7 +25,8 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $subscribe = [
-       'App\Listeners\EmployeeEventSubscriber'
+       'App\Listeners\EmployeeEventSubscriber',
+        'App\Listeners\AppraisalEventSubscriber'
     ];
 
     /**

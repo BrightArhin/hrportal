@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appraisal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -21,10 +23,45 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        return view('client.dashboards.employee');
+
+        global $newToEval;
+        global $appraise;
+        $pendingMyApproval=  count(Auth::user()->load(['appraisals'=> function ($query){
+            $query->whereStatus('Evaluated');
+        }])->appraisals);
+
+
+        $pendingEvaluation =  count(Auth::user()->load(['appraisals'=> function ($query){
+            $query->whereStatus('Pending');
+        }])->appraisals);
+
+        $employees = Auth::user()->load(['employees.appraisals'=> function ($query){
+            $query->whereStatus('Pending');
+        }]);
+
+        if($employees){
+            $newToEval = count($employees->employees->flatMap->appraisals) ;
+        }else{
+            $newToEval = 0;
+        }
+
+        $approved =  count(Auth::user()->load(['appraisals'=> function ($query){
+            $query->whereStatus('Completed');
+        }])->appraisals);
+
+        $disapproved = count(Auth::user()->load(['appraisals'=> function ($query){
+            $query->whereStatus('Disapproved');
+        }])->appraisals);
+
+        $appraisal = Appraisal::whereEmployeeId(Auth::user()->employee_id)->latest()->first();
+
+
+
+        return view('client.dashboards.landing' ,compact(['pendingMyApproval','pendingEvaluation', 'newToEval',
+            'disapproved', 'approved', 'appraisal']));
     }
 }

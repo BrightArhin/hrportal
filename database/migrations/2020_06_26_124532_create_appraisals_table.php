@@ -18,12 +18,12 @@ class CreateAppraisalsTable extends Migration
             $table->increments('id');
             $table->integer('employee_id')->unsigned()->nullable();
             $table->integer('supervisor_id')->unsigned()->nullable();
-            $table->enum('status',['Pending', 'Completed', 'Evaluated']);
+            $table->enum('status',['Pending', 'Completed', 'Evaluated', 'Disapproved']);
             $table->date('date_of_appraisal');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('employee_id')->references('employee_id')->on('employees');
-            $table->foreign('supervisor_id')->references('employee_id')->on('employees');
+            $table->foreign('employee_id')->references('employee_id')->on('employees')->onDelete('set null');;
+            $table->foreign('supervisor_id')->references('employee_id')->on('employees')->onDelete('set null');;
         });
     }
 

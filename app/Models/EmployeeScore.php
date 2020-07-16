@@ -28,7 +28,7 @@ class EmployeeScore extends Model
     use SoftDeletes;
 
     public $table = 'employee_scores';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -37,15 +37,15 @@ class EmployeeScore extends Model
     public $fillable = [
         'appraisal_id',
         'score_1',
-        'kpi_id_1',
+        'kpi_1',
         'score_2',
-        'kpi_id_2',
+        'kpi_2',
         'score_3',
-        'kpi_id_3',
+        'kpi_3',
         'score_4',
-        'kpi_id_4',
+        'kpi_4',
         'score_5',
-        'kpi_id_5'
+        'kpi_5'
     ];
 
     /**
@@ -57,15 +57,15 @@ class EmployeeScore extends Model
         'id' => 'integer',
         'appraisal_id' => 'integer',
         'score_1' => 'decimal:2',
-        'kpi_id_1' => 'integer',
+        'kpi_1' => 'string',
         'score_2' => 'decimal:2',
-        'kpi_id_2' => 'integer',
+        'kpi_2' => 'string',
         'score_3' => 'decimal:2',
-        'kpi_id_3' => 'integer',
+        'kpi_3' => 'string',
         'score_4' => 'decimal:2',
-        'kpi_id_4' => 'integer',
+        'kpi_4' => 'string',
         'score_5' => 'decimal:2',
-        'kpi_id_5' => 'integer'
+        'kpi_5' => 'string'
     ];
 
     /**
@@ -74,7 +74,7 @@ class EmployeeScore extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     /**

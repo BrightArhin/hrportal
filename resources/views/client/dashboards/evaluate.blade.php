@@ -1,15 +1,17 @@
-@extends('client.layouts.app')
+@extends('client.layouts.dashboard')
 
 @section('content')
-
-    <div>
 
 
 
         <div class="container">
 
         <div class="container table-information">
-            <h2 style=" margin-top :10px; align-self: flex-start">Employees to Yet Appraise</h2>
+            @if($appraisals === null)
+                <h2 style=" margin-top :10px; align-self: flex-start">Employees to Yet Appraise</h2>
+             @else
+                <h2 style=" margin-top :10px; align-self: flex-start">You currently have no employees to Appraise</h2>
+            @endif
 
             <table class="table" style="margin-top: 10px">
                 <thead>

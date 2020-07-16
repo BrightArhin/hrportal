@@ -98,37 +98,37 @@
 <!-- Department Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('department_id', 'Department :') !!}
-    {!! Form::select('department_id', $departments, '', ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
+    {!! Form::select('department_id', $departments, null, ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
 </div>
 
 <!-- Grade Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('grade_id', 'Grade :') !!}
-    {!! Form::select('grade_id', $grades, '', ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
+    {!! Form::select('grade_id', $grades, null, ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
 </div>
 
 <!-- Location Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('location_id', 'Location :') !!}
-    {!! Form::select('location_id', $locations, '', ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
+    {!! Form::select('location_id', $locations, null, ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
 </div>
 
 <!-- Rank Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('rank_id', 'Rank :') !!}
-    {!! Form::select('rank_id', $ranks, '', ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
+    {!! Form::select('rank_id', $ranks, null, ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
 </div>
 
 <!-- Job Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('job_id', 'Job :') !!}
-    {!! Form::select('job_id', $jobs, '', ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
+    {!! Form::select('job_id', $jobs, null, ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
 </div>
 
 <!-- Qualification Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('qualification_id', 'Qualification :') !!}
-    {!! Form::select('qualification_id', $qualifications, '', ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
+    {!! Form::select('qualification_id', $qualifications, null, ['class' => 'form-control', 'placeholder'=>'Please Select ...']) !!}
 </div>
 
 <!-- Role Field -->

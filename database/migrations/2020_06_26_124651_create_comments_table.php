@@ -16,11 +16,10 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('body');
             $table->integer('appraisal_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('appraisal_id')->references('id')->on('appraisals');
+            $table->foreign('appraisal_id')->references('id')->on('appraisals')->onDelete('set null');;
         });
     }
 

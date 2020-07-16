@@ -20,6 +20,7 @@ class CreateEmployeesTable extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
+            $table->integer('staff_number')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -39,12 +40,12 @@ class CreateEmployeesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('supervisor_id')->references('employee_id')->on('employees')->onDelete('set null');
-            $table->foreign('location_id')->references('id')->on('locations');
-            $table->foreign('department_id')->references('id')->on('departments');
-            $table->foreign('grade_id')->references('id')->on('grades');
-            $table->foreign('rank_id')->references('id')->on('ranks');
-            $table->foreign('job_id')->references('id')->on('jobs');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('set null');;
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');;
+            $table->foreign('grade_id')->references('id')->on('grades')->onDelete('set null');;
+            $table->foreign('rank_id')->references('id')->on('ranks')->onDelete('set null');;
+            $table->foreign('job_id')->references('id')->on('jobs')->onDelete('set null');;
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');;
 
             $table->foreign('qualification_id')->references('id')->on('qualifications');
         });

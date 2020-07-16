@@ -42,7 +42,6 @@ class Appraisal extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'status' =>'enum',
         'date_of_appraisal' => 'date',
         'supervisor_id' => 'integer'
     ];
@@ -84,5 +83,9 @@ class Appraisal extends Model
 
     public function supervisorscores(){
         return $this->hasOne(SupervisorScore::class, 'appraisal_id', 'id');
+    }
+
+    public function comment(){
+        return $this->hasMany(Comment::class, 'appraisal_id', 'id');
     }
 }

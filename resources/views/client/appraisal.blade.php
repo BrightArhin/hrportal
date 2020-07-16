@@ -76,12 +76,10 @@
                 <tr>
                     <td>Acceptance of responsibility</td>
                     <td>20</td>
-
                 </tr>
                 <tr>
                     <td>Punctuality</td>
                     <td>30</td>
-
                 </tr>
                 <tr>
                     <td>Co-operation</td>

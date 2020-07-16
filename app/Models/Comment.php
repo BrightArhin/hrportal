@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,7 +38,6 @@ class Comment extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'body' => 'string',
         'appraisal_id' => 'integer'
     ];
 
@@ -47,7 +47,6 @@ class Comment extends Model
      * @var array
      */
     public static $rules = [
-        'body' => 'required',
         'appraisal_id' => 'required'
     ];
 
@@ -57,5 +56,14 @@ class Comment extends Model
     public function appraisal()
     {
         return $this->belongsTo(\App\Models\Appraisal::class);
+    }
+
+    public function employee_comment(){
+        return $this->hasOne(EmployeeComment::class);
+    }
+
+
+    public function supervisor_comment(){
+        return $this->hasOne(SupervisorComment::class);
     }
 }

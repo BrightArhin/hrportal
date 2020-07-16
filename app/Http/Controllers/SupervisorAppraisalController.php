@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AppraisalEvaluatedEvent;
 use App\Events\SupervisorAppraised;
 use App\Listener\UpdateAppraisalStatus;
 use App\Models\Appraisal;
+use App\Models\Comment;
 use App\Models\SupervisorScore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,24 +28,27 @@ class SupervisorAppraisalController extends Controller
     {
         //
         $i=0;
-        $employee = Auth::user()->load('department');
-        $department =$employee->department()->with('kpis')->first();
-        $employees = Auth::user()->load(['employees.appraisals' => function($query){
-            $query->where('status', 'Pending');
-        }]);
+        if(Auth::user()){
+            $employee = Auth::user()->load('department');
+            $department =$employee->department()->with('kpis')->first();
+            $employees = Auth::user()->load(['employees.appraisals' => function($query){
+                $query->where('status', 'Pending')->orderBy('created_at', 'desc');
+            }]);
 
-        $emp= $employees->employees->map(function($item){
-            return $item;
-        });
+            $emp= $employees->employees->map(function($item){
+                return $item;
+            });
 
 
-        $appraisals =  $emp->flatMap(function($item){
-            return $item->appraisals->all();
-        });
+            $appraisals =  $emp->flatMap(function($item){
+                return $item->appraisals->all();
+            });
 
 //        dd($appraisals);
 
-        return view('client.dashboards.evaluate', compact(['appraisals']));
+            return view('client.dashboards.evaluate', compact(['appraisals', 'department', 'i']));
+        }
+        return redirect('/');
     }
 
     /**
@@ -103,20 +108,26 @@ class SupervisorAppraisalController extends Controller
 
     public function getEmployeeAppraisalForm($id){
         $i=0;
-        $appraisal =Appraisal::find($id)->load('employee');
+        $appraisal =Appraisal::find($id)->load('employee','employeescores');
+        $employeescores = $appraisal->employeescores;
         $employee = $appraisal->employee;
-        $department =  $employee->department()->with('kpis')->first();
         $appraisal_id = $appraisal->id;
-        return view('client.supervisor_employee', compact(['employee', 'department', 'i', 'appraisal_id']));
+        return view('client.supervisor_employee', compact(['employee', 'appraisal_id', 'employeescores']));
     }
 
     public function storeEmployeeAppraisal(Request $request){
 
         $appraisal = Appraisal::find($request->appraisal_id);
-        $supScore = new SupervisorScore();
-        $supScore->create($request->all());
+        if($request->development_prospects !=  '' || $request->require_training !=  ''){
+            $comment = $appraisal->comment()->create();
+            $comment->supervisor_comment()->create(['development_prospects'=>$request->development_prospects,
+                'require_training'=>$request->require_training]);
+        }
 
-        SupervisorAppraised::dispatch($appraisal);
+        $supScore = new SupervisorScore();
+        $supScore->create($request->except(['development_prospect', 'require_training']));
+
+        AppraisalEvaluatedEvent::dispatch($appraisal);
 
         return redirect('client/sup_appraise ');
     }

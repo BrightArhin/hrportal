@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appraisal;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -35,12 +36,15 @@ class EmployeeCommentController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->message !== ''){
+            $appraisal = Appraisal::find($request->appraisal_id);
+            $appraisal->status = 'Disapproved';
+            $appraisal->save();
 
-        $input = $request->all();
+            $comment = $appraisal->comment()->create();
+            $comment->employee_comment()->create($request->except('appraisal_id'));
 
-        /** @var Comment $comment */
-        $comment = Comment::create($input);
-
+        }
         return redirect('client.approval');
     }
 

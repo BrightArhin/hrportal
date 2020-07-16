@@ -18,6 +18,7 @@ use App\Models\Rank;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Response;
 
@@ -182,11 +183,11 @@ class EmployeeController extends AppBaseController
         if($employee->supervisor_id != null){
             $supervisor = Employee::whereEmployeeId($input['supervisor_id'])->first();
 
-            $employee->supervisors()->attach($supervisor->employee_id);
+            $employee->supervisors()->sync($supervisor->employee_id);
             $employee->save();
         }
 
-
+       $employee->save();
 
 
 
@@ -221,5 +222,17 @@ class EmployeeController extends AppBaseController
         Flash::success('Employee deleted successfully.');
 
         return redirect(route('admin.employees.index'));
+    }
+
+    public function changePassword(Request $request){
+        $this->validate($request, [
+            'password'=>'required|confirmed'
+        ]);
+
+        $employee = Employee::whereEmployeeId(Auth::user()->employee_id)->first();
+        $employee->password = Hash::make($request->password);
+        $employee->save();
+        flash('Password Changed Successfully')->success();
+        return redirect(route('profile'));
     }
 }

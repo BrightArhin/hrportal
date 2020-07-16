@@ -15,10 +15,12 @@
         "guzzlehttp/guzzle": "^6.3",
         "infyomlabs/adminlte-templates": "7.0.x-dev",
         "infyomlabs/laravel-generator": "7.0.x-dev",
+        "laracasts/flash": "^3.1",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "laravelcollective/html": "^6.1"
+        "laravelcollective/html": "^6.1",
+        "radic/blade-extensions": "~7.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

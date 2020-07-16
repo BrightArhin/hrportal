@@ -12,8 +12,11 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
-                color: #636b6f;
+                /*background: rgb(118,152,162);*/
+                /*background: linear-gradient(52deg, rgba(118,152,162,1) 16%, rgba(230,218,114,1) 73%);*/
+                background-image: url({{'images/food.jpg'}});
+                background-repeat: no-repeat;
+                color: white;
                 font-family: 'Nunito', sans-serif;
                 font-weight: 200;
                 height: 100vh;
@@ -38,6 +41,7 @@
                 position: absolute;
                 right: 10px;
                 top: 18px;
+                color: white;
             }
 
             .content {
@@ -49,7 +53,7 @@
             }
 
             .links > a {
-                color: #636b6f;
+                color: white;
                 padding: 0 25px;
                 font-size: 13px;
                 font-weight: 600;
@@ -81,19 +85,9 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    COCOBOD HR PORTAL
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
             </div>
         </div>
     </body>

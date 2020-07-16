@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Employee;
 use App\Observers\EmployeeObserver;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
         //
         Schema::defaultStringLength(191);
         Employee::observe(EmployeeObserver::class);
+        Blade::extend(function($value) {
+            return preg_replace('/\@set(.+)/', '<?php ${1} ?>', $value);
+        });
 
     }
 }

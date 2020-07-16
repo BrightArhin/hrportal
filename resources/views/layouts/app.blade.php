@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>InfyOm Generator</title>
+    <title>HR PORTAL</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <!-- Bootstrap 3.3.7 -->
@@ -29,7 +29,7 @@
     @yield('css')
 </head>
 
-<body class="skin-blue sidebar-mini">
+<body class="skin-yellow sidebar-mini">
 @if (!Auth::guest())
     <div class="wrapper">
         <!-- Main Header -->
@@ -46,8 +46,8 @@
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
-
-                <a href={{route(count(Auth::user()->employees) ==0 ?'client.emp_appraise.index': 'client.sup_appraise.index')}}><button  class="btn btn-primary" style="margin-top: 10px; margin-left: 70%">Go to Appraisal</button></a>
+                <div class="right-links">
+                <a href={{route('home')}}><button  class="btn btn-warning" style="margin-top:8px; margin-left: 80%; font-size: 18px; border:none; ">Home</button></a>
                 <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
@@ -56,7 +56,7 @@
                             <!-- Menu Toggle Button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <!-- The user image in the navbar-->
-                                <img src="http://infyom.com/images/logo/blue_logo_150x150.jpg"
+                                <img src={{asset('images/cocobod.jpg')}}
                                      class="user-image" alt="User Image"/>
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                 <span class="hidden-xs">{{ Auth::user()->name }}</span>
@@ -64,11 +64,11 @@
                             <ul class="dropdown-menu">
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
-                                    <img src="http://infyom.com/images/logo/blue_logo_150x150.jpg"
+                                    <img src={{asset('images/cocobod.jpg')}}
                                          class="img-circle" alt="User Image"/>
                                     <p>
                                         {{ Auth::user()->name }}
-                                        <small>Member since {{ Auth::user()->created_at->format('M. Y') }}</small>
+
                                     </p>
                                 </li>
                                 <!-- Menu Footer-->
@@ -91,6 +91,7 @@
                         </li>
                     </ul>
                 </div>
+                </div>
             </nav>
         </header>
 
@@ -103,7 +104,11 @@
 
         <!-- Main Footer -->
         <footer class="main-footer" style="max-height: 100px;text-align: center">
-            <strong>Copyright © 2016 <a href="#">Company</a>.</strong> All rights reserved.
+            ©
+            <script>
+                document.write(new Date().getFullYear())
+            </script>
+            <a href="http://www.cocobod.gh">Ghana Cocoa Board</a>
         </footer>
 
     </div>

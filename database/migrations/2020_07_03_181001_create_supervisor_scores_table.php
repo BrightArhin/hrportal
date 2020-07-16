@@ -18,23 +18,14 @@ class CreateSupervisorScoresTable extends Migration
             $table->increments('id');
             $table->integer('appraisal_id')->unsigned()->nullable();
             $table->decimal('score_1');
-            $table->integer('kpi_id_1')->unsigned()->nullable();
             $table->decimal('score_2');
-            $table->integer('kpi_id_2')->unsigned()->nullable();
             $table->decimal('score_3');
-            $table->integer('kpi_id_3')->unsigned()->nullable();
             $table->decimal('score_4');
-            $table->integer('kpi_id_4')->unsigned()->nullable();
             $table->decimal('score_5');
-            $table->integer('kpi_id_5')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('appraisal_id')->references('id')->on('appraisals');
-            $table->foreign('kpi_id_1')->references('id')->on('kpis');
-            $table->foreign('kpi_id_2')->references('id')->on('kpis');
-            $table->foreign('kpi_id_3')->references('id')->on('kpis');
-            $table->foreign('kpi_id_4')->references('id')->on('kpis');
-            $table->foreign('kpi_id_5')->references('id')->on('kpis');
+
         });
     }
 

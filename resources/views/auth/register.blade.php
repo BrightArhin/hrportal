@@ -31,10 +31,10 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition register-page">
+<body style="background-image: url({{asset('images/food.jpg')}}) ; background-repeat: no-repeat" ">
 <div class="register-box">
     <div class="register-logo">
-        <a href="{{ url('/home') }}"><b>InfyOm </b>Generator</a>
+        <a href="{{ url('/home') }}"><b style="color: white">SIGN UP </b></a>
     </div>
 
     <div class="register-box-body">
