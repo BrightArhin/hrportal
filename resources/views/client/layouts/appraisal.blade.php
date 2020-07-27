@@ -1,17 +1,4 @@
-<!--
-=========================================================
- Light Bootstrap Dashboard - v2.0.1
-=========================================================
 
- Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard
- Copyright 2019 Creative Tim (https://www.creative-tim.com)
- Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard/blob/master/LICENSE)
-
- Coded by Creative Tim
-
-=========================================================
-
- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -191,7 +178,7 @@
                         <script>
                             document.write(new Date().getFullYear())
                         </script>
-                        <a href="http://www.cocobod.gh">Ghana Cocoa Board</a>
+                        <a href="http://www.cocobod.gh">Information Systems Unit</a>
                     </p>
                 </nav>
             </div>
@@ -219,52 +206,7 @@
 
 {{--<script src={{asset('js/jquery.js')}}></script>--}}
 
-<script>
-    $(document).ready(()=>{
 
-        $('#result').click(()=>{
-            if($('#score_1').val() === '' || $('#score_2').val() === '' || $('#score_3').val() === '' || $('#score_4').val() === '' || $('#score_5').val() === ''){
-               return alert('Please complete scoring to view results')
-            }
-
-                const score_1 = parseFloat($('#score_1').val())
-                const score_2 = parseFloat($('#score_2').val())
-                const score_3 = parseFloat($('#score_3').val())
-                const score_4 = parseFloat($('#score_4').val())
-                const score_5 = parseFloat($('#score_5').val())
-                let sum = (score_1 + score_2 + score_3 + score_4 + score_5)
-                let avg = sum/5
-
-            if(score_1 >  5.0 || score_2 >  5.0 || score_3 >  5.0 || score_4 >  5.0 || score_5 >  5.0){
-                return alert('Scores cannot not be greater than 5')
-            }
-
-                    $('#num').html(5);
-                    $('#total').html(sum);
-                    $('#avg').html(avg);
-
-                    function check() {
-                        $("#the_highest").html('')
-                        $("#the_between").html('')
-                        $("#the_lowest").html('')
-                        if(avg >= 3.5) {
-                            $("#the_highest").html('&#10004;')
-                        }else if(avg >=2.0 && avg <= 3.4) {
-                            $("#the_between").html('&#10004;')
-                        }else {
-                            $("#the_lowest").html('&#10004;')
-                        }
-                    }
-            check()
-
-
-            }
-        )
-
-    })
-
-
-</script>
-
+@stack('scripts')
 
 </html>

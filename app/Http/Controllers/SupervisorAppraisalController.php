@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Events\AppraisalEvaluatedEvent;
+use App\Events\EmployeeAppraised;
 use App\Events\SupervisorAppraised;
+use App\Events\YearlyAppraisal;
+use App\Listener\SendReminder;
 use App\Listener\UpdateAppraisalStatus;
 use App\Models\Appraisal;
 use App\Models\Comment;
+use App\Models\Department;
+use App\Models\Employee;
 use App\Models\SupervisorScore;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -118,6 +125,7 @@ class SupervisorAppraisalController extends Controller
     public function storeEmployeeAppraisal(Request $request){
 
         $appraisal = Appraisal::find($request->appraisal_id);
+        $employee = Employee::whereEmployeeId($appraisal->employee_id)->first();
         if($request->development_prospects !=  '' || $request->require_training !=  ''){
             $comment = $appraisal->comment()->create();
             $comment->supervisor_comment()->create(['development_prospects'=>$request->development_prospects,
@@ -128,9 +136,123 @@ class SupervisorAppraisalController extends Controller
         $supScore->create($request->except(['development_prospect', 'require_training']));
 
         AppraisalEvaluatedEvent::dispatch($appraisal);
+        EmployeeAppraised::dispatch($employee);
 
         return redirect('client/sup_appraise ');
     }
+
+    public function getAppraisedEmployees(Request $request){
+
+        global $i;
+        $i =0;
+        $department = Department::whereId(Auth::user()->department_id)->first();
+        $employees = $department->load(['employees.appraisals'=> function($query)  {
+            $query->where('status', 'Completed')->where(function ($query)  {
+                $query->where('year',Carbon::now()->year);
+            })->orwhere(function($query){
+                $query->where('status', 'Disapproved')->where(function ($query){
+                    $query->where('year',Carbon::now()->year);
+                });
+            });
+        }]);
+
+
+        $the_employee_list = $employees->employees->filter(function($employee){
+            if(!$employee->appraisals->isEmpty()){
+                return $employee;
+            }
+        });
+        $employee_list = array_values($the_employee_list->all());
+
+
+        $the_appraisals = array();
+        foreach ($employee_list as $list){
+            array_push($the_appraisals, $list->appraisals[0]);
+        }
+        $supComments = array();
+
+        foreach ($the_appraisals as $appraisal){
+            $comments = $appraisal->comment()->get();
+            foreach ($comments as $comment){
+                if($comment->supervisor_comment){
+                    $sup_comment = $comment->supervisor_comment()->first();
+                    if($sup_comment->require_training !== ''){
+                        $appraisal = Appraisal::whereId($comment->appraisal_id)->first();
+                        $employee = $appraisal->employee()->first();
+                        if(!isset($supComments[$employee->employee_id])){
+                            $supComments[$employee->employee_id] = $sup_comment->require_training;
+                        }
+//
+                    }
+                }
+
+            }
+
+        }
+
+       return view('client.dashboards.appraisal_report',compact(['employee_list', 'supComments' ,'the_appraisals', 'i']));
+    }
+
+    public function searchForReport(Request $request){
+
+        global $year;
+        global  $not_found;
+        global $i;
+        $i =0;
+        $year = trim($request->year);
+        $department = Department::whereId(Auth::user()->department_id)->first();
+        $employees = $department->load(['employees.appraisals'=> function($query) use ($year) {
+            $query->where('status', 'Completed')->where(function ($query) use ($year) {
+                $query->where('year',$year);
+            })->orwhere(function($query) use ($year) {
+                $query->where('status', 'Disapproved')->where(function ($query) use ($year) {
+                    $query->where('year',$year);
+                });
+            });
+        }]);
+
+        $the_employee_list = $employees->employees->filter(function($employee){
+            if(!$employee->appraisals->isEmpty()){
+                return $employee;
+            }
+        });
+
+        $employee_list = array_values($the_employee_list->all());
+
+        $the_appraisals = array();
+        foreach ($employee_list as $list){
+            array_push($the_appraisals, $list->appraisals[0]);
+        }
+
+       if(sizeof($the_appraisals) == 0){
+           $not_found = 'No records found for '.$year;
+       }
+
+        $supComments = array();
+        foreach ($the_appraisals as $appraisal){
+            $comments = $appraisal->comment()->get();
+            foreach ($comments as $comment){
+                if($comment->supervisor_comment){
+                    $sup_comment = $comment->supervisor_comment()->first();
+                    if($sup_comment->require_training !== ''){
+                        $appraisal = Appraisal::whereId($comment->appraisal_id)->first();
+                        $employee = $appraisal->employee()->first();
+                        if(!isset($supComments[$employee->employee_id])){
+                            $supComments[$employee->employee_id] = $sup_comment->require_training;
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+
+
+        return view('client.dashboards.appraisal_report',compact(['employee_list', 'supComments' ,'the_appraisals', 'i', 'not_found']));
+    }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -141,5 +263,19 @@ class SupervisorAppraisalController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function sendAppraisalAlerts(){
+        $message = '';
+        $employees = Employee::all();
+        foreach ($employees as $employee){
+            try {
+                YearlyAppraisal::dispatch($employee);
+                $message = 'Email Alerts sent successfully';
+            }catch (Exception $e){
+                $message = 'There was an error sending the message';
+            }
+        }
+        return response()->json(['message' => $message]);
     }
 }

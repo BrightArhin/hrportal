@@ -11,6 +11,11 @@
 
                                 </div>
 
+                                <div class="alert alert-danger alert-dismissible" id="the_errors" style="display: none;">
+                                    <a href="#" onclick="$('#the_errors').hide()" class="close"  aria-label="close">&times;</a>
+                                    <p></p>
+                                </div>
+
                                 <h3 style=" margin-top: 30px">Overall Rating(After Appraisal Interview)</h3>
 
                                 <div id="scoring" >
@@ -52,8 +57,6 @@
 
                                 </div>
 
-                                <button style="margin-bottom: 30px" type="button" id="result" class="btn btn-danger">Show Results</button>
-
 
                                 <div class="row">
                                     <h3 style="margin-left: 20px">DEVELOPMENT/TRAINING NEEDS</h3>
@@ -74,11 +77,101 @@
                                         <a href="{{ route('client.emp_appraise.index') }}" class="btn btn-default">Cancel</a>
                                     </div>
 
-
-
-
                                     {!! Form::close() !!}
                                 </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(()=>{
+                let score_1;
+                let score_2;
+                let score_3;
+                let score_4;
+                let score_5;
+                let average = 0.0;
+                let sum =0
+                let message= '';
+
+                function calculateAverage(){
+
+                    if($('#score_1').val() ===''){
+                        score_1 = 0;
+                    }else{
+                        score_1 = parseInt($('#score_1').val())
+                    }
+                    if($('#score_2').val() === ''){
+                        score_2 = 0;
+                    }else{
+                        score_2 = parseInt($('#score_2').val())
+                    }
+                    if($('#score_3').val() === ''){
+                        score_3 = 0;
+                    }else{
+                        score_3 = parseInt($('#score_3').val())
+                    }
+                    if($('#score_4').val() === ''){
+                        score_4 = 0;
+                    }else{
+                        score_4 = parseInt($('#score_4').val())
+                    }
+                    if($('#score_5').val() === ''){
+                        score_5 = 0;
+                    }else{
+                        score_5 = parseInt($('#score_5').val())
+                    }
+                     sum = score_1 + score_2 + score_3 + score_4 + score_5;
+                     average = (score_1 + score_2 + score_3 + score_4 + score_5)/5
+                    $('#num').html(5);
+                    $('#total').html(sum);
+                    $('#avg').html(average);
+
+                    $("#the_highest").html('')
+                    $("#the_between").html('')
+                    $("#the_lowest").html('')
+                    if(average >= 3.5) {
+                        $("#the_highest").html('&#10004;')
+                        $("#the_highest").css('color' ,'#00bbff')
+                    }else if(average >=2.0 && average <= 3.4) {
+                        $("#the_between").html('&#10004;')
+                        $("#the_between").css('color' ,'#00bbff')
+                    }else {
+                        $("#the_lowest").html('&#10004;')
+                        $("#the_lowest").css('color' ,'#00bbff')
+                    }
+                    if(score_1 >  5.0 || score_2 >  5.0 || score_3 >  5.0 || score_4 >  5.0 || score_5 >  5.0){
+                        message ='One of your ratings exceeds 5. Please Check !!!!!'
+                        $('#the_errors').fadeIn('fast', ()=>{
+                            $('#the_errors > p').text(message)
+                        })
+                    }else{
+                        $('#the_errors').hide()
+                    }
+                }
+
+                $('#score_1').keyup(()=> {
+                    calculateAverage()
+                })
+                $('#score_2').keyup(()=> {
+                    calculateAverage()
+
+                })
+                $('#score_3').keyup(()=> {
+                    calculateAverage()
+                })
+                $('#score_4').keyup(()=> {
+                    calculateAverage()
+                })
+                $('#score_5').keyup(()=> {
+                    calculateAverage()
+
+                })
+            })
+
+
+
+
+        </script>
+    @endpush
 
 
 @endsection

@@ -1,4 +1,4 @@
-@extends('client.layouts.dashboard')
+@extends('client.layouts.homer')
 
 @section('content')
 
@@ -8,7 +8,7 @@
 
             <div class="container table-information">
                 @if($appraisals !== null)
-                <h2 style=" margin-top :10px; align-self: flex-start">Your Completed Appraisals</h2>
+                <h2 style=" margin-top :10px; align-self: flex-start">Approved Appraisals</h2>
                 @else
                     <h2 style=" margin-top :10px; align-self: flex-start">You currently have no completed Appraisals</h2>
                 @endif
@@ -17,6 +17,7 @@
                     <thead>
                     <tr>
                         <th>Appraisal</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -25,9 +26,11 @@
 
                     <tr>
                         <td>{{\Carbon\Carbon::parse( $appraisal->date_of_appraisal)->isoFormat('MMMM, DD YYYY')}}</td>
+                        <td style="color: {{$appraisal->status == 'Completed' ? 'lime' : 'red'}}">{{$appraisal->status == 'Completed' ? 'Approved' : 'Disapproved'}}</td>
                         <td>
                             <a href={{route('client.appraisal_details', ['id'=>$appraisal->id])}}><button class="btn btn-info" >View</button></a>
                         </td>
+                
                     </tr>
                 @endforeach
                     </tbody>
@@ -35,8 +38,6 @@
 
                 </div>
         </div>
-
-
 
 
 @endsection

@@ -1,4 +1,4 @@
-@extends('client.layouts.dashboard')
+@extends('client.layouts.homer')
 
 @section('content')
 

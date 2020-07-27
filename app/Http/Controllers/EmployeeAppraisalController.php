@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Events\AppraisalCompleteEvent;
+use App\Events\EmployeeAppraised;
+use App\Events\PendingAppraisals;
 use App\Models\Appraisal;
+use App\Models\Employee;
 use App\Models\EmployeeComment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,9 +23,20 @@ class EmployeeAppraisalController extends Controller
     public function index()
     {
         $i=0;
-        $employee = Auth::user()->load('department');
-        $department =$employee->department()->with('kpis')->first();
-        return view('client.employee', compact(['employee', 'department', 'i']));
+        global $status;
+        $status ='';
+        if(Auth::user()){
+            $appraisals = Appraisal::whereEmployeeId(Auth::user()->employee_id)->where('year', Carbon::now()->year)->get();
+            if(count($appraisals) >= 1){
+                $status = "Appraisal forms Locked. Check again next year";
+            }
+            $employee = Auth::user()->load('department');
+            $department =$employee->department()->with('kpis')->first();
+            return view('client.employee', compact(['employee', 'department', 'i', 'status']));
+        }
+
+        return redirect('/login');
+
     }
 
     /**
@@ -44,10 +58,15 @@ class EmployeeAppraisalController extends Controller
     public function store(Request $request)
     {
        $appraisal = Auth::user()->appraisals()->create(['supervisor_id'=>Auth::user()->supervisor_id,
-           'date_of_appraisal'=>Carbon::now(), 'status'=>'Pending']);
+           'date_of_appraisal'=>Carbon::now(),'year'=> Carbon::now()->isoFormat('YYYY') ,'status'=>'Pending']);
        $appraisal->employeescores()->create($request->all());
+       $supervisor = Employee::whereEmployeeId(Auth::user()->supervisor_id)->first();
+       if($supervisor){
+         PendingAppraisals::dispatch($supervisor);
+           return redirect('/home');
+       }
 
-        Flash::success('Appraisal created successfully.');
+       flash('Scores submitted successfully.')->success();
 
         return redirect('/home');
     }
@@ -68,16 +87,22 @@ class EmployeeAppraisalController extends Controller
                       $supervisor_scores->score_5;
          $avg = $sumScores/5;
         $employee_scores = $appraisal->employeescores()->first();
-         return view('client.dashboards.show_evaluated', compact(['supervisor_scores', 'employee_scores', 'sumScores', 'avg']));
+        $appraisal->load('comment.supervisor_comment');
+        $sup_comment = $appraisal->comment->filter(function($comment){
+            if($comment->supervisor_comment !== null ){
+                return $comment;
+            }
+        });
+
+         return view('client.dashboards.show_evaluated', compact(['supervisor_scores', 'employee_scores', 'sumScores', 'avg', 'sup_comment']));
     }
 
 
     public function showdisapproval($emp_appraise){
         $appraisals = Appraisal::whereId($emp_appraise)->whereStatus('Disapproved')->with('supervisorscores')->get() ;
-        return $appraisals;
-        $comment = EmployeeComment::where('appraisal_id', $appraisal->id);
-        $supervisor_scores = $appraisal->supervisorscores()->first();
-        $employee_scores = $appraisal->employeescores()->first();
+        $comment = EmployeeComment::where('appraisal_id', $appraisals->id);
+        $supervisor_scores = $appraisals->supervisorscores()->first();
+        $employee_scores = $appraisals->employeescores()->first();
         return view('client.dashboards.disapproved',compact(['supervisor_scores', 'employee_scores', 'comment']));
     }
     /**
@@ -136,8 +161,22 @@ class EmployeeAppraisalController extends Controller
 
     }
 
+    public function pendingAppraisals(){
+        $appraisals = Auth::user()->appraisals()->whereStatus('Pending')->get();
+        return view('client.dashboards.pending', compact('appraisals'));
+
+
+    }
+
     public function getApprovedAppraisals(){
-        $appraisals = Auth::user()->appraisals()->whereStatus('Completed')->with('supervisorscores', 'employeescores')->get();
+       $appraisals = Appraisal::where(function($query){
+           $query->where('employee_id', Auth::user()->employee_id);
+               $query->where('status', 'Completed');
+        })->orWhere(function($query){
+            $query->where('employee_id', Auth::user()->employee_id);
+            $query->where('status', 'Disapproved');
+        })->get();
+
         return view('client.dashboards.approved', compact('appraisals'));
 
 
@@ -145,21 +184,35 @@ class EmployeeAppraisalController extends Controller
 
     public function appraisalDetails($id){
         $appraisal = Appraisal::whereId($id)->first();
-        $appraisal->load('employeescores', 'supervisorscores', 'comment.employee_comment');
+        $appraisal->load('employeescores', 'supervisorscores', 'comment.employee_comment', 'comment.supervisor_comment');
         $employee_scores = $appraisal->employeescores;
         $supervisor_scores = $appraisal->supervisorscores;
         $sumScores = $supervisor_scores->score_1+$supervisor_scores->score_2+
             $supervisor_scores->score_4+$supervisor_scores->score_4+
             $supervisor_scores->score_5;
         $avg = $sumScores/5;
-        $comment =$appraisal->comment->filter(function($comment){
+        $emp_comment =$appraisal->comment->filter(function($comment){
             if($comment->employee_comment !== null ){
+                return $comment;
+            }
+        });
+        $sup_comment = $appraisal->comment->filter(function($comment){
+            if($comment->supervisor_comment !== null ){
                 return $comment;
             }
         });
 
         return view('client.dashboards.disapproved_details', compact(['employee_scores','supervisor_scores',
-            'sumScores', 'avg', 'comment']));
+            'sumScores', 'avg', 'emp_comment', 'sup_comment']));
     }
+
+    public function pendingDetails($id){
+        $appraisal = Appraisal::whereId($id)->first();
+        $appraisal->load('employeescores');
+        $employee_scores = $appraisal->employeescores;
+        return view('client.dashboards.pending_details', compact(['employee_scores']));
+    }
+
+
 
 }

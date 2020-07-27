@@ -1,9 +1,9 @@
-@extends('client.layouts.dashboard')
+@extends('client.layouts.homer')
 
 @section('content')
 
 
-        <div class="container">
+        <div class="container" id="emp_results">
 
             <div class="container table-information">
                 <h2 style=" margin-top :10px; align-self: flex-start">EVALUATION OF KEY RESULT AREAS/DUTIES</h2>
@@ -20,27 +20,27 @@
                     <tr>
                         <td>{{$employee_scores->kpi_1}}</td>
                         <td>{{$employee_scores->score_1}}</td>
-                        <td>{{$supervisor_scores->score_1}}</td>
+                        <td style="color: red">{{$supervisor_scores->score_1}}</td>
                     </tr>
                     <tr>
                         <td>{{$employee_scores->kpi_2}}</td>
                         <td>{{$employee_scores->score_2}}</td>
-                        <td>{{$supervisor_scores->score_2}}</td>
+                        <td style="color: red">{{$supervisor_scores->score_2}}</td>
                     </tr>
                     <tr>
                         <td>{{$employee_scores->kpi_3}}</td>
                         <td>{{$employee_scores->score_3}}</td>
-                        <td>{{$supervisor_scores->score_3}}</td>
+                        <td style="color: red">{{$supervisor_scores->score_3}}</td>
                     </tr>
                     <tr>
                         <td>{{$employee_scores->kpi_4}}</td>
                         <td>{{$employee_scores->score_4}}</td>
-                        <td>{{$supervisor_scores->score_4}}</td>
+                        <td style="color: red">{{$supervisor_scores->score_4}}</td>
                     </tr>
                     <tr>
                         <td>{{$employee_scores->kpi_5}}</td>
                         <td>{{$employee_scores->score_5}}</td>
-                        <td>{{$supervisor_scores->score_5}}</td>
+                        <td style="color: red">{{$supervisor_scores->score_5}}</td>
                     </tr>
 
                     </tbody>
@@ -71,7 +71,7 @@
                             <tr>
                                 <td class="tcol">DOUBLE INCREMENT</td>
                                 <td class="tcol">3.5 TO 4.4</td>
-                                <td class="tcol">&#10004;</td>
+                                <td class="tcol" style="color: #00bbff">&#10004;</td>
                             </tr>
                             <tr>
                                 <td class="tcol">NORMAL INCREMENT</td>
@@ -97,7 +97,7 @@
                         <tr>
                             <td class="tcol">NORMAL INCREMENT</td>
                             <td class="tcol">2.0 TO 3.4</td>
-                            <td class="tcol">&#10004;</td>
+                            <td class="tcol" style="color: #00bbff">&#10004;</td>
                         </tr>
                         <tr>
                             <td class="tcol">NO INCREMENT</td>
@@ -123,7 +123,7 @@
                         <tr>
                             <td class="tcol">NO INCREMENT</td>
                             <td class="tcol">BELOW 2.0</td>
-                            <td class="tcol">&#10004;</td>
+                            <td class="tcol" style="color: #00bbff">&#10004;</td>
                         </tr>
                         </tbody>
                     </table>
@@ -156,6 +156,18 @@
 
                 <p style="margin: 20px 10px">(<b>NOTE : </b>Above 4.5 - One may be recommended for promotion depending on availability of Vacancies)</p>
 
+                @foreach($sup_comment as $the_comment)
+                    @if($the_comment)
+                        <h4 style="margin-top: 24px; margin-left: 10px">DEVELOPMENT/TRAINING NEEDS</h4>
+                        <div class="comment-box" style="margin-left: 10px" >
+                            <p><strong>What are his/her development prospects</strong></p>
+                            <p>{{$the_comment->supervisor_comment->development_prospects}}</p>
+                            <p><strong>Does he/she require any training? If so, specify the Kind of training you recommend</strong></p>
+                            <p>{{$the_comment->supervisor_comment->require_training}}</p>
+                        </div>
+                    @endif
+                @endforeach
+
                 <div class="buttons" >
 
                     <form method="POST"  action={{route('client.emp_appraise.update', ['emp_appraise'=>$supervisor_scores->appraisal_id])}}>
@@ -184,6 +196,8 @@
         </div>
 
 
+
+
         <script>
             let show = false
 
@@ -198,5 +212,9 @@
                 }
             }
         </script>
+
+
+
+
 @endsection
 

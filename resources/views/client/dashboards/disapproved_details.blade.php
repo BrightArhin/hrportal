@@ -1,8 +1,8 @@
-@extends('client.layouts.dashboard')
+@extends('client.layouts.homer')
 
 @section('content')
 
-        <div class="container">
+        <div class="container" id="printable">
 
             <div class="container table-information">
                 <h2 style=" margin-top :10px; align-self: flex-start">EVALUATION OF KEY RESULT AREAS/DUTIES</h2>
@@ -72,7 +72,7 @@
                     <tr>
                         <td class="tcol">DOUBLE INCREMENT</td>
                         <td class="tcol">3.5 TO 4.4</td>
-                        <td class="tcol">&#10004;</td>
+                        <td class="tcol" style="color: #00bbff">&#10004;</td>
                     </tr>
                     <tr>
                         <td class="tcol">NORMAL INCREMENT</td>
@@ -88,7 +88,7 @@
                 </table>
                 @break
                 @case ($avg >= 2.0 && $avg <= 3.4)
-                <table class="table-bordered" style="width: 50%; margin-top: 10px">
+                <table class="table-bordered" style="width: 50%; margin-top: 10px; margin-left: 10px">
                     <tbody>
                     <tr>
                         <td class="tcol">DOUBLE INCREMENT</td>
@@ -98,7 +98,7 @@
                     <tr>
                         <td class="tcol">NORMAL INCREMENT</td>
                         <td class="tcol">2.0 TO 3.4</td>
-                        <td class="tcol">&#10004;</td>
+                        <td class="tcol" style="color: #00bbff">&#10004;</td>
                     </tr>
                     <tr>
                         <td class="tcol">NO INCREMENT</td>
@@ -109,7 +109,7 @@
                 </table>
                 @break
                 @case ($avg < 2.0)
-                <table class="table-bordered" style="width: 50%; margin-top: 10px">
+                <table class="table-bordered" style="width: 50%; margin-top: 10px; margin-left: 10px">
                     <tbody>
                     <tr>
                         <td class="tcol">DOUBLE INCREMENT</td>
@@ -124,14 +124,14 @@
                     <tr>
                         <td class="tcol">NO INCREMENT</td>
                         <td class="tcol">BELOW 2.0</td>
-                        <td class="tcol">&#10004;</td>
+                        <td class="tcol" style="color: #00bbff">&#10004;</td>
                     </tr>
                     </tbody>
                 </table>
                 @break
                 @default
 
-                <table class="table-bordered" style="width: 50%; margin-top: 10px">
+                <table class="table-bordered" style="width: 50%; margin-top: 10px; margin-left: 10px">
                     <tbody>
                     <tr>
                         <td>DOUBLE INCREMENT</td>
@@ -157,22 +157,42 @@
 
             <p style="margin: 20px 10px">(<b>NOTE : </b>Above 4.5 - One may be recommended for promotion depending on availability of Vacancies)</p>
 
+            @foreach($sup_comment as $the_comment)
+                @if($the_comment)
+                    <h4 style="margin-top: 20px; margin-left: 10px">DEVELOPMENT/TRAINING NEEDS</h4>
+                    <div class="comment-box" style="margin-left: 10px">
+                        <p><strong>What are his/her development prospects</strong></p>
+                        <p>{{$the_comment->supervisor_comment->development_prospects}}</p>
+                        <p><strong>Does he/she require any training? If so, specify the Kind of training you recommend</strong></>
+                        <p>{{$the_comment->supervisor_comment->require_training}}</p>
+                    </div>
+                @endif
+            @endforeach
 
+            @foreach($emp_comment as $the_comment)
+                @if($the_comment)
+                    <div class="comment-box" style="margin-left: 10px">
+                        <h5 style="font-weight: bold;">YOUR COMMENT</h5>
+                        <p>{{$the_comment->employee_comment->message}}</p>
+                    </div>
+                @endif
+            @endforeach
 
-
-        @foreach($comment as $the_comment)
-                    @if($the_comment)
-                <div class="comment-box" style="margin-left: 10px">
-                    <h5 style="font-weight: bold;">YOUR COMMENT</h5>
-                    <p>{{$the_comment->employee_comment->message}}</p>
-                </div>
-                    @endif
-                @endforeach
 
 
         </div>
+        <button id="printbtn" class="btn btn-facebook" style="margin-top: 10px; margin-left: 30px">Print Results</button>
 
+        @push('scripts')
+            <script>
+                $(document).ready(function () {
+                 $('#printbtn').on('click', function(){
+                        $.print('#printable')
+                    })
 
+                })
+            </script>
+        @endpush
 
 
 

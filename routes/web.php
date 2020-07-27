@@ -1,8 +1,11 @@
 <?php
 
 use App\Mail\AppraisalMail;
+use App\Models\Appraisal;
 use App\Models\Department;
 use App\Models\Employee;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -133,9 +136,18 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 
-Route::get('get', function () {
-    Mail::to('barhin49@gmail.com')->send(new AppraisalMail());
-    return new AppraisalMail();
+
+Route::get('get', function (){
+    $appraisals = Appraisal::where('supervisor_id', Auth::user()->employee_id)->whereStatus('Pending')->get();
+    if($appraisals){
+        $employees =  $appraisals->map(function($appraisal){
+            return $appraisal->employee;
+        });
+    }
+    if($employees){
+        return $employees;
+
+    }
 });
 
 Route::group(['prefix'=>'client'],function(){
@@ -165,7 +177,11 @@ Route::get('client/sup_appraise/getForm/{id}', 'SupervisorAppraisalController@ge
 Route::post('client/sup_appraise/storeEmployeeAppraisal/', 'SupervisorAppraisalController@storeEmployeeAppraisal')->name('store_appraisal');
 Route::get('client/disapproved', 'EmployeeAppraisalController@getDisapprovedAppraisals')->name('client.disapproved');
 Route::get('client/approved', 'EmployeeAppraisalController@getApprovedAppraisals')->name('client.approved');
+Route::get('client/pending', 'EmployeeAppraisalController@pendingAppraisals')->name('client.pending');
 Route::get('client/appraisal_details/{id}', 'EmployeeAppraisalController@appraisalDetails')->name('client.appraisal_details');
+Route::get('client/pending_details/{id}', 'EmployeeAppraisalController@pendingDetails')->name('client.pending_details');
+Route::get('client/appraised_employees', 'SupervisorAppraisalController@getAppraisedEmployees')->name('client.appraised_employees');
+Route::get('client/report', 'SupervisorAppraisalController@searchForReport')->name('client.report');
 Route::get('/about', function (){
     return view('client.about');
 })->middleware('auth');
@@ -175,6 +191,16 @@ Route::get('/profile', function (){
 Route::get('/policy', function(){
     return view('client.policy');
 })->name('policy');
+Route::get('client/sendAppraisalAlerts', 'SupervisorAppraisalController@sendAppraisalAlerts')->name('sendAppraisalAlerts');
+
+Route::get('/bio_welcome', function(){
+        $employee= Auth::user()->load('supervisors');
+        $supervisor = $employee->supervisors()->first();
+
+    return view('client.dashboards.welcomeBio', compact(['supervisor']));
+})->name('bio-welcome')->middleware('auth');
+
+Route::post('/getSupervisor', 'EmployeeController@getSupervisor');
 
 Route::patch('/password_change', 'EmployeeController@changePassword')->name('change_password');
 

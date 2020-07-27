@@ -21,7 +21,17 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\SupervisorAppraised'=>[
             'App\Listener\UpdateAppraisalStatus'
+        ],
+        'App\Events\EmployeeAppraised'=>[
+            'App\Listener\SendApprovalEmail'
+        ],
+        'App\Events\PendingAppraisals'=>[
+            'App\Listener\SendSupervisorEmail'
+        ],
+        'App\Events\YearlyAppraisal'=>[
+            'App\Listener\SendReminder'
         ]
+
     ];
 
     protected $subscribe = [

@@ -257,7 +257,7 @@ input{
 
 .comment-box{
     /*margin-left: 25px;*/
-    margin-top: 30px;
+    margin-top: 10px;
     width: 50%;
     border-top:1px solid lightgrey;
     border-left:10px solid orange;
@@ -306,9 +306,16 @@ input{
 
 }
 
+
 .spacing{
     margin-left: 70px;
     text-align: left;
+}
+
+.bio-heading{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
 }
 
 /*.bio-content p{*/
@@ -328,3 +335,37 @@ input{
     border-bottom: none;
 }
 
+.personal-info{
+    margin-top: 30px;
+    border-left: 10px solid orange;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-radius: 10px;
+}
+
+.home-images{
+    width: 250px;
+    height: 150px;
+
+
+}
+
+.report{
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-gap: 4em;
+    margin: 10px auto;
+}
+
+.searching{
+    display: grid;
+    grid-template-columns: 200px 200px;
+}
+
+.locked{
+    margin-top: 250px ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

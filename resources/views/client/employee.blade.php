@@ -2,12 +2,18 @@
 
 @section('content')
 
-
+                            @if($status ==='')
 
                                 <div class="app-form">
                                     {!! Form::open(['route' => 'client.emp_appraise.store']) !!}
-
+                                    <h2>EVALUATION OF KEY RESULT AREAS</h2>
                                     @include('client.partials.fields')
+
+                                    <div class="alert alert-info alert-dismissible" id="the_alert" style="display: none;">
+                                        <a href="#" onclick="$('#the_alert').hide()" class="close"  aria-label="close">&times;</a>
+                                        <p><strong>Success!</strong> Indicates a successful or positive action.</p>
+                                    </div>
+
 
                                     <h3 style="margin-left: 10px; margin-top: 30px">Overall Rating(After Appraisal Interview)</h3>
                                     <div class="overall">
@@ -58,6 +64,11 @@
                                     {!! Form::close() !!}
 
                                 </div>
+                            @else
+                                <div class="locked">
+                                <h3 style="color: red">{{$status}}</h3>
+                                </div>
+                    @endif
 
 
 

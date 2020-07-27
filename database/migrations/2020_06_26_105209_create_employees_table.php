@@ -20,7 +20,7 @@ class CreateEmployeesTable extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->integer('staff_number')->nullable();
+            $table->string('staff_number')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -37,6 +37,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('job_id')->unsigned()->nullable();
             $table->integer('role_id')->unsigned()->nullable();
             $table->enum('isAdmin', [1,0]);
+            $table->enum('isSupervisor', [1,0]);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('supervisor_id')->references('employee_id')->on('employees')->onDelete('set null');

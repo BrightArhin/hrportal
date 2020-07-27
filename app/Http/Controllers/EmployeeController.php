@@ -76,6 +76,7 @@ class EmployeeController extends AppBaseController
             'supervisor_id' => $input['supervisor_id'],
             'first_name' => $input['first_name'],
             'last_name' => $input['last_name'],
+            'staff_number' => $input['staff_number'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'birth_date' => $input['birth_date'],
@@ -83,6 +84,7 @@ class EmployeeController extends AppBaseController
             'date_last_promotion' => $input['date_last_promotion'],
             'status' => $input['status'],
             'isAdmin'=> $input['isAdmin'],
+            'isSupervisor'=> $input['isSupervisor'],
             'grade_id' => $input['grade_id'],
             'location_id' => $input['location_id'],
             'department_id' => $input['department_id'],
@@ -234,5 +236,19 @@ class EmployeeController extends AppBaseController
         $employee->save();
         flash('Password Changed Successfully')->success();
         return redirect(route('profile'));
+    }
+
+    public function getSupervisor(Request $request){
+        global $location;
+        $location = $request->location;
+        $department = Department::whereId($request->id)->with(['employees' => function ($query) use ($location) {
+
+            $query->where('isSupervisor', 1)
+                ->where(function ($query) use ($location) {
+                    $query->where('location_id', $location);
+                });
+        }])->get();
+
+        return response()->json(['message'=>$department]);
     }
 }

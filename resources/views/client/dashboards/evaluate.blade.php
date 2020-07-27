@@ -1,4 +1,4 @@
-@extends('client.layouts.dashboard')
+@extends('client.layouts.homer')
 
 @section('content')
 
@@ -7,8 +7,8 @@
         <div class="container">
 
         <div class="container table-information">
-            @if($appraisals === null)
-                <h2 style=" margin-top :10px; align-self: flex-start">Employees to Yet Appraise</h2>
+            @if($appraisals)
+                <h2 style=" margin-top :10px; align-self: flex-start">Employees to Appraise</h2>
              @else
                 <h2 style=" margin-top :10px; align-self: flex-start">You currently have no employees to Appraise</h2>
             @endif

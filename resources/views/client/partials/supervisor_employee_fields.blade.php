@@ -17,7 +17,7 @@
            {{$employeescores->score_1}}
         </td>
         <td>
-            {!! Form::number('score_1', null, ['class' => 'form-control', 'required' ,'step'=>0.1,'min'=>0.0, 'max'=>5.0, "id"=>"score_1"]) !!}
+            {!! Form::number('score_1', null, ['class' => 'form-control', 'required' ,'min'=>0, 'max'=>5, "id"=>"score_1"]) !!}
         </td>
     </tr>
 
@@ -29,7 +29,7 @@
             {{$employeescores->score_2}}
         </td>
         <td>
-            {!! Form::number('score_2', null, ['class' => 'form-control', 'required' ,'step'=>0.1,'min'=>0.0, 'max'=>5.0,"id"=>"score_2"]) !!}
+            {!! Form::number('score_2', null, ['class' => 'form-control', 'required' ,'min'=>0, 'max'=>5,"id"=>"score_2"]) !!}
         </td>
     </tr>
 
@@ -41,7 +41,7 @@
             {{$employeescores->score_3}}
         </td>
         <td>
-            {!! Form::number('score_3', null, ['class' => 'form-control', 'required' ,'step'=>0.1,'min'=>0.0, 'max'=>5.0,"id"=>"score_3"]) !!}
+            {!! Form::number('score_3', null, ['class' => 'form-control', 'required' ,'min'=>0, 'max'=>5,"id"=>"score_3"]) !!}
         </td>
     </tr>
 
@@ -53,7 +53,7 @@
             {{$employeescores->score_1}}
         </td>
         <td>
-            {!! Form::number('score_4', null, ['class' => 'form-control', 'required' ,'step'=>0.1,'min'=>0.0, 'max'=>5.0,"id"=>"score_4"]) !!}
+            {!! Form::number('score_4', null, ['class' => 'form-control', 'required' ,'min'=>0, 'max'=>5,"id"=>"score_4"]) !!}
         </td>
     </tr>
 
@@ -65,7 +65,7 @@
             {{$employeescores->score_1}}
         </td>
         <td>
-            {!! Form::number('score_5', null, ['class' => 'form-control', 'required' ,'step'=>0.1,'min'=>0.0, 'max'=>5.0 ,"id"=>"score_5"]) !!}
+            {!! Form::number('score_5', null, ['class' => 'form-control', 'required' ,'min'=>0, 'max'=>5 ,"id"=>"score_5"]) !!}
             {!! Form::hidden('appraisal_id', $appraisal_id) !!}
         </td>
     </tr>

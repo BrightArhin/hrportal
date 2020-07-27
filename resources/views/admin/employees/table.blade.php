@@ -4,6 +4,7 @@
         <tr>
             <th>Employee Id</th>
             <th>Supervisor Id</th>
+            <th>Staff Number</th>
             <th>First Name</th>
             <th>Middle Name</th>
             <th>Last Name</th>
@@ -14,6 +15,7 @@
             <th>Date Last Promotion</th>
             <th>Status</th>
             <th>isAdmin</th>
+            <th>isSupervisor</th>
             <th>Location</th>
             <th>Department</th>
             <th>Qualification</th>
@@ -30,6 +32,7 @@
             <tr>
                 <td>{{ $employee->employee_id }}</td>
                 <td>{{ $employee->supervisor_id }}</td>
+                <td>{{ $employee->staff_number }}</td>
                 <td>{{ $employee->first_name }}</td>
                 <td>{{ $employee->middle_name }}</td>
                 <td>{{ $employee->last_name }}</td>
@@ -40,7 +43,7 @@
                 <td>{{ $employee->date_last_promotion }}</td>
                 <td>{{ $employee->status }}</td>
                 <td>{{ $employee->isAdmin }}</td>
-
+                <td>{{ $employee->isSupervisor}}</td>
                 <td>@if($employee->location)
                         {{ $employee->location->name }}
                     @else

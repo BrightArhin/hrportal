@@ -1,10 +1,11 @@
 @component('mail::message')
 # Introduction
 
-The body of your message.
+Your supervisor has finished your appraisal. Please Review to Approve or Disapprove
 
 @component('mail::button', ['url' => ''])
-Button Text
+    {{--    todo add official URL To the server--}}
+   Visit HR Portal
 @endcomponent
 
 Thanks,<br>

@@ -30,6 +30,7 @@ class Appraisal extends Model
 
     public $fillable = [
         'date_of_appraisal',
+        'year',
         'status',
         'employee_id',
         'supervisor_id'

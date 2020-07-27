@@ -34,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
             return preg_replace('/\@set(.+)/', '<?php ${1} ?>', $value);
         });
 
+
     }
 }
